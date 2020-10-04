@@ -13,7 +13,18 @@ public class Program
 	public static boolean solveGrid(int[][] grid){
 		// Look for blank positions ( where grid[][] == 0 )
 		for (int r = 0; r<9; ++r){
-			for (int c =0; c<9; ++c){
+			ArrayList<Integer> ValidNumbers = new ArrayList<>();
+			ValidNumbers.add(1);
+			ValidNumbers.add(2);
+			ValidNumbers.add(3);
+			ValidNumbers.add(4);
+			ValidNumbers.add(5);
+			ValidNumbers.add(6);
+			ValidNumbers.add(7);
+			ValidNumbers.add(8);
+			ValidNumbers.add(9);
+			for (int c : ValidNumbers){
+				System.out.println(c);
 					if( grid[ r ][ c ] == 0 ) {
 						// We found a blank position. Now we input a valid Number (1-9)
 						for (int validNum = 1; validNum<10; ++validNum){
@@ -32,6 +43,9 @@ public class Program
 						// was not found. This means that the program should backtrack
 						return false;
 					}
+					else{
+						ValidNumbers.remove(Integer.valueOf(grid[ r ][ c ]));
+					}
 			}
 		}
 
@@ -42,17 +56,14 @@ public class Program
 	}
 
 	public static boolean canInputNumber( int row, int col, int number, int[][] grid){
-		// Check the row and column
-		for (int i = 0; i<9; ++i){
-			if( grid[i][col] == number || grid[row][i] == number ) return false;
-		}
-
-		// Check the block
+		// Check the block, row and column
 		int rowBlockTopLeft = Math.round(row/3)*3;
 		int colBlockTopLeft = Math.round(col/3)*3;
+		int count = 0;
 		for (int r = 0; r<3; ++r){
 			for (int c =0; c<3; ++c){
-					if( grid[ rowBlockTopLeft + r][ colBlockTopLeft + c] == number ) return false;
+					if( grid[ rowBlockTopLeft + r ][ colBlockTopLeft + c ] == number || grid[count][col] == number || grid[row][count] == number ) return false;
+					++count;
 			}
 		}
 
@@ -77,8 +88,9 @@ public class Program
 		for (int i = 0; i<9; ++i){
 			line = "";
 			for (int j =0; j<9; ++j){
-				if(j == 8) line+=Integer.toString(grid[i][j]);
-				else line+=Integer.toString(grid[i][j]) + " ";
+				//if(j == 8) line+=Integer.toString(grid[i][j]);
+				//else 
+				line+=Integer.toString(grid[i][j]) + " ";
 			}
 			System.out.println(line);
 		}
