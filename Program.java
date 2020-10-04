@@ -14,18 +14,8 @@ public class Program
 		// Look for blank positions ( where grid[][] == 0 )
 		for (int r = 0; r<9; ++r){
 			ArrayList<Integer> ValidNumbers = new ArrayList<>();
-			ValidNumbers.add(1);
-			ValidNumbers.add(2);
-			ValidNumbers.add(3);
-			ValidNumbers.add(4);
-			ValidNumbers.add(5);
-			ValidNumbers.add(6);
-			ValidNumbers.add(7);
-			ValidNumbers.add(8);
-			ValidNumbers.add(9);
-			for (int c : ValidNumbers){
-				System.out.println(c);
-					if( grid[ r ][ c ] == 0 ) {
+			for (int c =0; c<9; ++c){
+					if( !ValidNumbers.contains(grid[ r ][ c ]) && grid[ r ][ c ] == 0 ) {
 						// We found a blank position. Now we input a valid Number (1-9)
 						for (int validNum = 1; validNum<10; ++validNum){
 							if (canInputNumber(r,c,validNum,grid)) {
@@ -44,7 +34,7 @@ public class Program
 						return false;
 					}
 					else{
-						ValidNumbers.remove(Integer.valueOf(grid[ r ][ c ]));
+						ValidNumbers.add( grid[ r ][ c ] );
 					}
 			}
 		}
