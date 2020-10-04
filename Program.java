@@ -15,26 +15,31 @@ public class Program
 		for (int r = 0; r<9; ++r){
 			ArrayList<Integer> ValidNumbers = new ArrayList<>();
 			for (int c =0; c<9; ++c){
-					if( !ValidNumbers.contains(grid[ r ][ c ]) && grid[ r ][ c ] == 0 ) {
-						// We found a blank position. Now we input a valid Number (1-9)
-						for (int validNum = 1; validNum<10; ++validNum){
-							if (canInputNumber(r,c,validNum,grid)) {
-								grid[r][c] = validNum;
-								// Now we have a modified grid (It has a new number)
-								// We will now solve the modified grid
-								if(solveGrid(grid)) return true;
+					int GridNumber = grid[ r ][ c ];
+					if( !ValidNumbers.contains(GridNumber)) { 
+						if( GridNumber == 0 ) {
+							// We found a blank position. Now we input a valid Number (1-9)
+							for (int validNum = 1; validNum<10; ++validNum){
+								if ( !ValidNumbers.contains(validNum) && canInputNumber(r,c,validNum,grid) ) {
+								
+									grid[r][c] = validNum;
+									
+									// Now we have a modified grid (It has a new number)
+									// We will now solve the modified grid
+									if(solveGrid(grid)) return true;
 
-								// If this section runs then that means the modified grid did
-								// not lead to a solution. so we reset it.
-								grid[r][c] = 0;
+									// If this section runs then that means the modified grid did
+									// not lead to a solution. so we reset it.
+									grid[r][c] = 0;
+								}
 							}
+							// If the code gets to this point then that means a valid Number
+							// was not found. This means that the program should backtrack
+							return false;
 						}
-						// If the code gets to this point then that means a valid Number
-						// was not found. This means that the program should backtrack
-						return false;
-					}
-					else{
-						ValidNumbers.add( grid[ r ][ c ] );
+						else{
+							ValidNumbers.add( GridNumber );
+						}
 					}
 			}
 		}
@@ -85,5 +90,4 @@ public class Program
 			System.out.println(line);
 		}
 	}
-
 }
