@@ -5,13 +5,15 @@ public class Program
 	public static void main (String args[])
 	{
 		int[][] grid = new int[9][9];
+		
+		// List that stores all the blocks with zeros
 		ArrayList<pair> zeros = new ArrayList<>();
 		Scanner myObj = new Scanner(System.in);
 		for (int r = 0; r<9; ++r){
 			String[] LineNumbers =  myObj.nextLine().split("\\s+");
 			for (int c =0; c<9; ++c){
 				int newNum = Integer.parseInt(LineNumbers[c]);
-				grid[r][c] = Integer.parseInt(LineNumbers[c]);
+				grid[r][c] = newNum;
 				if( newNum == 0 ) {
 					zeros.add(new pair(r,c));
 				}
@@ -39,8 +41,12 @@ public class Program
 			return true;
 		}
 		pair p = zeros.get(0);
+		
+		// Since the ArrayList is mutable, the zeros array is passed by reference instead
+		// of value. So we have to create a new array to pass.
 		ArrayList<pair> newZeros = new ArrayList<>(zeros);
 		newZeros.remove(0);
+		
 		// We found a blank position. Now we input a valid Number (1-9)
 		int r = p.row, c = p.col;
 		for (int validNum = 1; validNum<10; ++validNum){
