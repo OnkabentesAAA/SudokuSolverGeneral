@@ -1,27 +1,50 @@
 import java.util.*;
+import java.io.*;
 
 public class Program
 {
 	public static void main (String args[])
 	{
-		int[][] grid = new int[9][9];
-		
-		// List that stores all the blocks with zeros
-		ArrayList<pair> zeros = new ArrayList<>();
-		Scanner myObj = new Scanner(System.in);
-		for (int r = 0; r<9; ++r){
-			String[] LineNumbers =  myObj.nextLine().split("\\s+");
-			for (int c =0; c<9; ++c){
-				int newNum = Integer.parseInt(LineNumbers[c]);
-				grid[r][c] = newNum;
-				if( newNum == 0 ) {
-					zeros.add(new pair(r,c));
+		int solvedGrids=0;
+		File file = new File("Grids.txt");
+		try{
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			
+			int[][] grid = new int[9][9];
+			ArrayList<pair> zeros = new ArrayList<>();
+			int rowNum=-1;
+			String GridDetails="";
+			String line;
+			while(( line = br.readLine()) != null){
+				++rowNum;
+				if(line.equals("-1")) break;
+				if(rowNum==0) {
+					GridDetails=line;
+					grid = new int[9][9];
+					// List that stores all the blocks with zeros
+				 	zeros = new ArrayList<>();
+					continue;
+				}
+				String[] LineNumbers =  line.split("\\s+");
+				for (int c =0; c<9; ++c){
+					int newNum = Integer.parseInt(LineNumbers[c]);
+					grid[rowNum-1][c] = newNum;
+					if( newNum == 0 ) {
+						zeros.add(new pair(rowNum-1,c));
+					}
+				}
+				
+				if (rowNum==9) {
+					rowNum=-1;
+					boolean Solved = solveGrid(grid, zeros);
+					++solvedGrids;
 				}
 			}
 		}
-		boolean Solved = solveGrid(grid, zeros);
+		catch(Exception e){ e.printStackTrace();}
 		//if (Solved) System.out.println("The grid has been solved.");
 		//else System.out.println("The grid could not be solved.");
+		System.out.println("Solved Grids: "+solvedGrids);
 	}
 	
 	public static class pair{
