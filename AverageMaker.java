@@ -1,7 +1,5 @@
 import java.util.*;
 
-import com.sun.org.apache.xpath.internal.operations.Number;
-import com.sun.xml.internal.ws.util.StringUtils;
 
 import java.io.*;
 
@@ -18,9 +16,9 @@ public class AverageMaker {
 	    return true;
 	}
 	
-	static class TimePair{
+	static class DataPair{
 		int Count =0;
-		double time;
+		double Data;
 		
 		public void setCount() {
 			this.Count++;
@@ -30,17 +28,17 @@ public class AverageMaker {
 			return Count;
 		}
 		
-		public void setTime(double x) {
-			this.time = x;
+		public void setData(double x) {
+			this.Data = x;
 		}
 		
-		public double getTime() {
-			return time;
+		public double getData() {
+			return Data;
 		}
 	}
 	public static void main(String[] args) throws IOException{
 		//TODO: make pair array of value and count
-		ArrayList<TimePair> arrData= new ArrayList<TimePair>();
+		ArrayList<DataPair> arrData= new ArrayList<DataPair>();
 		BufferedReader csvReader = new BufferedReader(new FileReader("Grids.csv"));
 		String row;
 		//read in values from CSV file
@@ -55,19 +53,19 @@ public class AverageMaker {
 		    // if number of clues exists in the arraylist it will be incremented and the value added, otherwise a new entry will be made
 		    if(Integer.parseInt(data[0]) +1> arrData.size()) {
 			    System.out.print("Didn't find " + data[0] + " so we added it \n");
-		    	TimePair input = new TimePair();
+		    	DataPair input = new DataPair();
 			    input.Count = 0;
-			    input.time = Double.parseDouble(data[1]);
+			    input.Data = Double.parseDouble(data[1]);
 			    arrData.add(input);
 		    }else {
 		    	System.out.print("Index " + data[0] + " has been found\n");
-		    	//we get the index and the new time
+		    	//we get the index and the new Data
 		    	int countIndex = Integer.parseInt(data[0]);
-		    	double timeInc = Double.parseDouble(data[1]);
-		    	//get the current count and time
-		    	double timeVal = arrData.get(countIndex).getTime() + timeInc;
+		    	double DataInc = Double.parseDouble(data[1]);
+		    	//get the current count and Data
+		    	double DataVal = arrData.get(countIndex).getData() + DataInc;
 		    	arrData.get(countIndex).setCount();
-		    	arrData.get(countIndex).setTime(timeVal);
+		    	arrData.get(countIndex).setData(DataVal);
 		    	
 		    }
 		    
@@ -78,11 +76,11 @@ public class AverageMaker {
 		//calculate averages
 		double[] averages = new double[arrData.size()];
 		for(int i =0; i < arrData.size(); i++) {
-			averages[i] = arrData.get(i).getTime()/arrData.get(i).getCount();
+			averages[i] = arrData.get(i).getData()/arrData.get(i).getCount();
 		}
 		//add to CSV file
 		FileWriter csvWriter = new FileWriter("Grids_Averaged.csv");
-		csvWriter.append("input(number of open spaces),time(in nanoseconds)");
+		csvWriter.append("input(number of open spaces),Time(in nanoseconds)");
 		csvWriter.append("\n");
 		for (int j=0; j < averages.length;j++) {
 			csvWriter.append(Integer.toString(j));
